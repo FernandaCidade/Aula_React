@@ -5,11 +5,11 @@ import Facebook from "../../assets/img/facebook.svg"
 import Instagram from "../../assets/img/instagram.svg"
 import Linkedin from "../../assets/img/linkedin.svg"
 
-function CadastroDev(){
+function ListaDev(){
 
     return(
         <>
-        <main>
+        <main id="lista-servicos">
             <div className="container container_lista_devs">
                 <div className="lista_devs_conteudo">
                     <h1>Lista de Devs</h1>
@@ -125,4 +125,4 @@ function CadastroDev(){
 
     </>
     )
-} export default CadastroDev
+} export default ListaDev  

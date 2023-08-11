@@ -51,7 +51,6 @@ h2 {
     box-shadow: 15px 15px 30px #00000066;
 }
 
-
 /* MAIN */
 main {
     background-image:
@@ -242,68 +241,3 @@ hr {
     background-color: white;
     color: var(--azulP);
 }
-
-
-/* FOOTER */
-footer {
-    background-color: var(--azulP);
-    /* background-image: 
-        linear-gradient( #06082170, #06082170),
-        url("../img/background_footer.png"); */
-    background-size: cover;
-    color: var(--branco);
-    background-repeat: no-repeat;
-}
-
-.rodape {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.rodape>p {
-    font-family: var(--font2);
-    margin-bottom: 10px;
-}
-
-.rodape_conteudo {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    padding: 30px 0;
-}
-
-.rodape_conteudo h2 {
-    font-size: 24px;
-}
-
-.rodape_conteudo>img {
-    width: 40%;
-    max-width: 400px;
-    min-width: 250px;
-}
-
-.rodape_conteudo_paginas ul {
-    font-family: var(--font2);
-    font-size: 18px;
-}
-
-.rodape_conteudo_contatos {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
-}
-
-.rodape_conteudo_contatos img {
-    width: 45px;
-    margin: 10px;
-}
-
-.rodape_conteudo_contatos>a {
-    font-family: var(--font2);
-    font-size: 18px;
-    text-decoration: none;
-    color: var(--branco);
-}
-
