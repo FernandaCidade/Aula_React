@@ -1,66 +1,95 @@
-export default function ListaServicos(){
+import "./style.css"
+import { useState } from "react"
+import CardServ from "../../Componentes/CardServ";
 
-    return(
-        <>
-        <main>
-        <div className="container container_lista_servicos">
-            <div className="lista_servicos_conteudo">
-                <h1>Lista de Serviços</h1>
-                <hr/>
-                <form method="post">
-                    <div className="wrapper_form">
-                        <label htmlFor="busca">Procurar serviços</label>
-                        <div className="campo-label">
-                            <input type="search" name="campo-busca" id="busca" placeholder="Buscar serviços por tecnologias..."/>
-                            <button type="submit">Buscar</button>
+export default function ListaServicos() {
+
+    const [servs, setSevrs] = useState<any[]>([
+
+        {
+            titulo: "Desenvolvimento de site institucional - Gateway de Pagamento / Fintech",
+            preco: "R$1300,00",
+            texto: "DESENVOLVER UM SITE RESPONSIVO QUE SEJA UTILIZADO COMO UMA PLATAFORMA DE APRESENTAÇÃO DO NOSSO GATEWAY DE PAGAMENTO. O OBJETIVO PRINCIPAL DESTE PROJETO É CRIAR UM SITE ATRAENTE E INFORMATIVO, QUE DEMONSTRE AS FUNCIONALIDADES E BENEFÍCIOS DO NOSSO GATEWAY DE PAGAMENTO PARA POTENCIAIS CLIENTES.",
+            skills: ["HTML", "CSS", "REACT"]
+          
+          },
+          
+          {
+            titulo: "BOT TELEGRAM PAGAMENTO",
+            texto: "PRECISO FAZER UM CÓDIGO EM PYTHON PARA UM BOT DO TELEGRAM. O BOT SERÁ PARA SOLICITAÇÃO DE PAGAMENTO.",
+            preco: "R$ 2400,00",
+            skills: ["Python"]
+          
+          },
+          
+          {
+            titulo: "CAIXA RÁPIDO",
+            preco: "R$ 1200,00",
+            texto: "PRECISO FAZER UM SOFTWARE QUE PERMITA AO USUÁRIO FAZER O UPLOAD DE SEU EXTRATO BANCÁRIO EM FORMATO (OFX). DENTRO DO SOFTWARE O MESMO PODERÁ CATEGORIZAR TODAS AS SUAS RECEITAS E DESPESAS, TENDO CATEGORIAS SUGERIDAS PELO SOFTWARE E PERMITINDO TAMBÉM PERSONALIZAÇÕES. APÓS O LANÇAMENTO DE VÁRIOS EXTRATOS O SOFTWARE IRÁ ENTENDER QUE SÃO LANÇAMENTOS PARECIDOS E FARÁ A CATEGORIZAÇÃO DE MANEIRA AUTOMÁTICA, CABENDO AO USUÁRIO SOMENTE CATEGORIZAR AS RECEITAS E DESPESAS QUE NÃO SE REPETEM. APÓS A CATEGORIZAÇÃO O SOFTWARE IRÁ EMITIR GRÁFICOS E RELATÓRIOS BASEADOS NA CATEGORIZAÇÃO DAS CONTAS.",
+            skills: ["Python"]
+          
+          }
+    ]);
+
+    const [skillDigitada, setSkillDigitada] = useState<string>("");
+
+    const [listaServFiltrados, setListaServFiltrados] = useState<any[]>(servs);
+
+    function buscarSkill(event: any){
+        event.preventDefault();
+
+        const servFiltadros = servs.filter((serv: any) => serv.skills.includes(skillDigitada.toLocaleUpperCase()));
+
+        if(servFiltadros.length === 0){
+            alert("Nenhum serviço foi encontrado com esta skillS")
+        }else{
+            setListaServFiltrados(servFiltadros)
+        }
+    }
+
+    function retornoServGeral (event: any){
+        if(event.target.value === ""){
+            setListaServFiltrados(servs);
+        }
+
+        setSkillDigitada(event.target.value);
+    }
+
+
+    return (
+        <main id="lista-servicos">
+            <div className="container container_lista_servicos">
+                <div className="lista_servicos_conteudo">
+                    <h1>Lista de Serviços</h1>
+                    <hr/>
+                        <form method="post" onSubmit={buscarSkill}>
+                            <div className="wrapper_form">
+                                <label htmlFor="busca">Procurar serviços</label>
+                                <div className="campo-label">
+                                    <input type="search" name="campo-busca" id="busca" placeholder="Buscar serviços por tecnologias..."onChange={retornoServGeral}/>
+                                        <button type="submit">Buscar</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div className="wrapper_lista">
+                            <ul>
+                            {listaServFiltrados.map((serv: any, index: number) => {
+                                return <li>
+                                    <CardServ
+                                    titulo={serv.titulo}
+                                    texto={serv.texto}
+                                    preco={serv.preco}
+                                    techs={serv.skills}
+                                    />
+                                </li>
+                            }
+                            )}
+                               
+                            </ul>
                         </div>
-                    </div>
-                </form>
-                <div className="wrapper_lista">
-                    <ul>                   
-                        <li>
-                            <div className="servico">
-                                <div className="topo_servico">
-                                    <h3>Desenvolvimento de site institucional - Gateway de Pagamento / Fintech</h3>
-                                    <span>R$ 1300,00</span>
-                                </div>
-                                <p>Desenvolver um site responsivo que seja utilizado como uma plataforma de apresentação do nosso gateway de pagamento. O objetivo principal deste projeto é criar um site atraente e informativo, que demonstre as funcionalidades e benefícios do nosso gateway de pagamento para potenciais clientes.</p>
-                                <div className="techs">
-                                    <span>HTML</span>
-                                    <span>CSS</span>
-                                    <span>React</span>
-                                </div>
-                            </div>
-                        </li>  
-                        <li>
-                            <div className="servico">
-                                <div className="topo_servico">
-                                    <h3>Bot telegram Pagamento</h3>
-                                    <span>R$ 2400,00</span>
-                                </div>
-                                <p>Preciso fazer um código em python para um bot do telegram. O bot será para solicitação de pagamento.</p>
-                                <div className="techs">
-                                    <span>Python</span>
-                                </div>
-                            </div>
-                        </li>                 
-                        <li>
-                            <div className="servico">
-                                <div className="topo_servico">
-                                    <h3>Caixa Rápido</h3>
-                                    <span>R$ 1200,00</span>
-                                </div>
-                                <p>Preciso fazer um  software que permita ao usuário fazer o upload de seu extrato bancário em formato( ofx). Dentro do software o mesmo poderá categorizar todas as suas receitas e despesas, tendo categorias sugeridas pelo software e permitindo também personalizações. Após o lançamento de vários extratos o software irá entender que são lançamentos parecidos e fará a categorização de maneira automática, cabendo ao usuário somente categorizar as receitas e despesas que não se repetem. Após a categorização o software irá emitir gráficos e relatórios baseados na categorização das contas.</p>
-                                <div className="techs">
-                                    <span>Python</span>
-                                </div>
-                            </div>
-                        </li>                 
-                    </ul>
                 </div>
             </div>
-        </div>
-    </main>
-        </>
+        </main>
     )
 }
+
