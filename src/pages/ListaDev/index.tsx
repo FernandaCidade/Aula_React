@@ -5,49 +5,32 @@ import Facebook from "../../assets/img/facebook.svg"
 import Instagram from "../../assets/img/instagram.svg"
 import Linkedin from "../../assets/img/linkedin.svg"
 import CardDev from "../../Componentes/CardDev"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
-
+import api from "../../utils/api";
 
 export default function ListaDev(){
 
     const [devs, setDevs] = useState<any[]>([
-        {
-            img_perfil: "https://github.com/Thiago-Nascimento.png",
-            nome: "Thiago Nascimento",
-            email: "thiago@email.com",
-            skills: ["HTML", "CSS", "REACT"]
-        },
-        {
-            img_perfil: "https://github.com/JessicaSanto.png",
-            nome: "Jessica Franzon",
-            email: "jessica@email.com",
-            skills: ["HTML", "CSS", "REACT"]
-        },
-        {
-            img_perfil: "https://github.com/odirlei-assis.png",
-            nome: "Odirlei Sabella",
-            email: "odirlei@email.com",
-            skills: ["HTML", "CSS", "ANGULAR"]
-        },
-        {
-            img_perfil: "https://github.com/alexiamelhado18.png",
-            nome: "Aléxia Vitória",
-            email: "alexia@email.com",
-            skills: ["PYTHON", "VUE", "REACT"]
-        } 
+       
     ]);
 
     const [skillDigitada, setSkillDigitada] = useState<string>("");
 
     const [listaDevsFiltrados, setListaDevsFiltrados] = useState<any[]>(devs);
 
+   // toda vez que lista devs carregar, vai executar o que tiver  dentro de use effect
+    useEffect( () => {
+        document.title = "VSConnect - Lista de Devs"
+        listarDesenvolvedores()
+    }, [] )
+
     //faze uma function para dar função para a barra de busca
 
     function buscarPorSkill(event: any){
         event.preventDefault();
 
-        const devsFiltadros = devs.filter((dev: any) => dev.skills.includes(skillDigitada.toLocaleUpperCase()));
+        const devsFiltadros = devs.filter((dev: any) => dev.hardSkills.includes(skillDigitada.toLocaleUpperCase()));
 
         if(devsFiltadros.length === 0){
             alert("Nenhum desenvolvedor foi encontrado com essa skill")
@@ -58,16 +41,24 @@ export default function ListaDev(){
 
     function retornoDevsGeral (event: any){
         if(event.target.value === ""){
-            setListaDevsFiltrados(devs);
+            listarDesenvolvedores()
         }
 
         setSkillDigitada(event.target.value);
     }
 
+    function listarDesenvolvedores(){
+        api.get("users").then((resposta: any) =>{
+            console.log(resposta.data)
+            setDevs(resposta.data);
+        })
+
+    }
+
 
     return(
         <>
-        <main id="lista-servicos">
+        <main id="lista-servicos">  
             <div className="container container_lista_devs">
                 <div className="lista_devs_conteudo">
                     <h1>Lista de Devs</h1>
@@ -83,13 +74,14 @@ export default function ListaDev(){
                     </form>
                     <div className="wrapper_lista">
                         <ul>
-                            {listaDevsFiltrados.map((dev: any, index: number) => {
+
+                            {devs.map((dev: any, index: number) => {
                                 return <li>
                                     <CardDev
-                                    foto={dev.img_perfil}
+                                    foto={dev.user_img}
                                     nome={dev.nome}
                                     email={dev.email}
-                                    techs={dev.skills}
+                                    techs={dev.hardSkills}
                                     />
                                 </li>
                             }
