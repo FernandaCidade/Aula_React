@@ -78,6 +78,7 @@ export default function ListaDev(){
                             {devs.map((dev: any, index: number) => {
                                 return <li>
                                     <CardDev
+                                    id={dev.id}
                                     foto={dev.user_img}
                                     nome={dev.nome}
                                     email={dev.email}
