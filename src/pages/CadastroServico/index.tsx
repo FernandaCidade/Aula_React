@@ -16,6 +16,12 @@ function CadastroServico() {
             "JAVASCRIPT"
         ]
     );
+    
+    useEffect(() => {
+        //Inserindo o título da guia de endereço da página atual.
+        document.title = "VSConnect - Lista de Serviços";
+    }, []);
+
     const [skillsSelecionadas, setSkillsSelecionadas] = useState<string[]>([]);
     const [select, setSelect] = useState<string>("");
 
@@ -23,21 +29,21 @@ function CadastroServico() {
     const [descricao, setDescricao] = useState<string>("");
     const [proposta, setProposta] = useState<string>("");
 
-    function CadastrarServico(event:any){
-        event.preventDeFault();
+    function cadastrarServico(event:any){
+        event.preventDefault();
         const formData = new FormData();
 
-        formData.append("titulo", titulo)
-        formData.append("descricao", descricao)
-        formData.append("proposta", proposta)
-        formData.append("hardSkills", JSON.stringify(skillsSelecionadas))
+        formData.append("nome", titulo)
+        formData.append("valor", descricao)
+        formData.append("descricao", proposta)
+        formData.append("techs", JSON.stringify(skillsSelecionadas))
 
         
         api.post("servicos", formData).then((response) =>{ 
             console.log(response)
-            alert("Usuário criado com sucesso! >.< ")
+            alert("Serviço criado com sucesso! >.< ")
 
-            //Navegação para login 
+           
         } ).catch((error) => {
             console.log(error)
         })
@@ -66,13 +72,13 @@ function CadastroServico() {
             }
         }
     }
-   
+    function excluirSkill(skill: string) {
+         //A variavel novaListaSkillsSelecionadas armazena skills diferente da skill que o usuário clicou para ser excluida.      
+          const novaListaSkillsSelecionadas = skillsSelecionadas.filter(item => item !== skill); 
+         //Atualiza o valor do state skillsSelecionadas, com o valor da variavel novaListaSkillsSelecionadas  
+           setSkillsSelecionadas(novaListaSkillsSelecionadas);
+         };
 
-
-    useEffect(() => {
-        //Inserindo o título da guia de endereço da página atual.
-        document.title = "VSConnect - Lista de Serviços";
-    }, []);
 
     return (
         <main className="main_cad_servico">
@@ -80,7 +86,7 @@ function CadastroServico() {
                 <div className="cad_serv_conteudo">
                     <h1>Cadastro de Serviço</h1>
                     <hr />
-                    <form onSubmit={CadastrarServico}className="cad_serv_formulario" action="">
+                    <form onSubmit={cadastrarServico} className="cad_serv_formulario" action="">
                         <div className="cad_serv_box_input">
                             <label htmlFor="titulo">Titulo do serviço:</label>
                             <input
@@ -116,12 +122,12 @@ function CadastroServico() {
                         <div className="cad_serv_box_skills">
                             <span>Selecione uma Skill para adicionar</span>
                             <div className="cad_linha_select">
-                                            <select
+                                            <select defaultValue={"DEFAULT"}
                                                 name=""
                                                 id="cad_select_skill"
                                                 onChange={(e) => setSelect(e.target.value)}>
                                             
-                                                <option selected disabled value="">Selecione</option>
+                                                <option  value="DEFAULT" disabled>Selecione</option>
                                                 {
                                                     techs.map((tech: any, index: number) => {
                                                         return <option key={index} value={tech}>{tech}</option>
@@ -130,12 +136,32 @@ function CadastroServico() {
                                             </select>
                                             <button
                                                 type="button"
+                                                value="Inserir"
                                                 id="cad_btn_inserir"
                                                 onClick={adicionarSkill}>
                                                 Inserir
                                             </button>
                                         </div>
                             <div id="cad_lista_skills">
+
+                            { 
+                             skillsSelecionadas.length > 0 ?
+                              skillsSelecionadas.map((el: any, index: number) => {
+                                 return <div key={index} className="cad_item_skill">
+                                  <span className="cad_span_skill">{el}</span>
+                                    <button
+                                        type="button"
+                                        id="cad_item_excluir"
+                                        onClick={() => excluirSkill(el)}
+                                        className="cad_item_excluir">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"> 
+                                            <path
+                                            d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+                                                </svg>
+                                             </button>
+                                        </div> 
+                                              }) : <span className="cad_span_skill">Nenhuma skill cadastrada</span>  
+ }
 
                             </div>
                         </div>
