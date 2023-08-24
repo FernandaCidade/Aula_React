@@ -37,7 +37,7 @@ function CadastroUsuario() {
     }
 
     function cadastrarUsuario(event: any){
-        event.preventDefault();
+        event.preventDefault(); //é para manter as informações no campo, após o submit
         
         const formData = new FormData() //trata arquivos de forma intuitiva, no caso de imagens
         
