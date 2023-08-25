@@ -28,7 +28,7 @@ function PerfilUsuario() {
             setEmail(response.data.email)
             setUf(response.data.uf)
             setCidade(response.data.cidade)
-            setListaSkills(response.data.hardSkills)
+            setListaSkills(response.data.parceListaTechs())
 
            
         }).catch((error) => console.log(error))

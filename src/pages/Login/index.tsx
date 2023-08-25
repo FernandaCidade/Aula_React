@@ -2,11 +2,18 @@
 
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
+import secureLocalStorage from "react-secure-storage"
+
+
+
 import "./style.css";
+import { useNavigate } from "react-router-dom";
 
 
 
 function Login() {
+
+    const navigate = useNavigate();
 
     const [email,setEmail] = useState<string>("");
     const [senha,setSenha] = useState<string>("");
@@ -21,6 +28,10 @@ function Login() {
         }
         api.post("login", usuario).then((response) => {
             console.log(response)
+
+            secureLocalStorage.setItem("user", response.data)
+            navigate("/perfil/" + response.data.user.id ) //vai redirecionar ao perfil do cliente que retorna no response.data
+
         })
 
 
